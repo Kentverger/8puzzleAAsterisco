@@ -1,8 +1,8 @@
 
 // Variables iniciales
 var raiz = [[1, 2, 3],
-		[4, 5, 0],
-		[7, 8, 6]];
+			[4, 0, 5],
+			[7, 8, 6]];
 
 var meta = [[1, 2, 3],
 		[4, 5, 6],
@@ -57,12 +57,17 @@ Nodo.prototype.ponNodo = function(nodo){
 *
 **/
 
+//se declara el nodo inicial con la función Nodo que inicializa el nivel y las piezas mal colocadas en 0
 var nodoInicial = new Nodo(raiz);
+//se declara el nodo meta con la función Nodo que inicializa el nivel y las piezas mal colocadas en 0
 var nodoMeta = new Nodo(meta);
 
+//agrega el nodo inicial a la lista
 lista.push(nodoInicial);
 
+//inicializa variable contador en 0
 var contador = parseInt(0);
+//inicializa variable nivel en 0
 var nivel = parseInt(0);
 
 
