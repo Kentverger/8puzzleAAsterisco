@@ -218,8 +218,16 @@ fs.readFile(__dirname+"/entrada", "utf8", function(err, data){
 		}
 
 		if(compraraNodos(nodoMeta.obtenNodo(), nodosHijo[0].obtenNodo())){
+			//Número de esquinas por el numero de casillas que pueden desplazar
+			var esquina = 4*2;
+			//Número de lados por el numero de casillas que pueden desplazar
+			var lado = 4*3;
+			//Casilla central por las casillas que puede desplazar
+			var centro = 1*4;
+			//factor de ramificación
+			var factor = (parseInt(esquina)+parseInt(lado)+parseInt(centro))/8;//número de casillas que se desplazan.
 			console.log("Pasos: " + nodosHijo[0].obtenNivel());
-			console.log("Factor de ramificación: :(");
+			console.log("Factor de ramificación: "+factor);
 			console.log(pasos);
 			process.exit(1);
 		}

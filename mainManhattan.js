@@ -1,29 +1,10 @@
-
-// Variables iniciales
-var raiz = [[1, 2, 3],
-			[4, 0, 5],
-			[7, 8, 6]];
-
-var meta = [[1, 2, 3],
-		[4, 5, 6],
-		[7, 8, 0]];
-
-var lista = [];
+var fs = require("fs");
+var util = require('util');
 
 var exp_cont=0;
 var pasos=0;
 
-/**
-*
-*    Objeto nodo con las propiedades de costo y piezas mal colocadas
-*
-**/
 
-function Nodo(nodo){
-	this.nodo = nodo;
-	this.distanciaManhattan = 0;
-	this.nivel = 0;
-}
 function Casilla(casilla,fil,col,val){
 	this.valCas = casilla;
 	this.fil = fil;
@@ -35,8 +16,23 @@ function CasillaCorrecta(casilla,fil, col){
 	this.fil = fil;
 	this.col = col;
 }
-Nodo.prototype.obtenDistanciaManhattan = function(){
-	return this.distanciaManhattan;
+
+/**
+*
+*    Objeto nodo con las propiedades de costo y piezas mal colocadas
+*
+**/
+
+function Nodo(nodo){
+	this.nodo = nodo;
+	this.piezasMalColocadas = 0;
+	this.nivel = 0;
+	this.movimiento = "N";
+	this.fn = 0;
+}
+
+Nodo.prototype.obtenPiezasMalColocadas = function(){
+	return this.piezasMalColocadas;
 }
 
 Nodo.prototype.obtenNivel = function(){
@@ -48,11 +44,15 @@ Nodo.prototype.obtenNodo = function(){
 }
 
 Nodo.prototype.obtenFn = function(){
-	return this.distanciaManhattan + this.nivel;
+	return this.piezasMalColocadas + this.nivel;
+}		
+
+Nodo.prototype.obtenMovimiento = function(){
+	return this.movimiento;
 }
 
-Nodo.prototype.ponDistanciaManhattan = function(distancia){
-	this.distanciaManhattan = distancia;
+Nodo.prototype.ponPiezasMalColocadas = function(piezas){
+	this.piezasMalColocadas = piezas;
 }
 
 Nodo.prototype.ponNivel = function(nivel){
@@ -62,28 +62,19 @@ Nodo.prototype.ponNivel = function(nivel){
 Nodo.prototype.ponNodo = function(nodo){
 	this.nodo = nodo;
 }
-
+Nodo.prototype.ponMov = function(mov){
+	this.movimiento = mov;
+}
+Nodo.prototype.ponFn = function(fn){
+	this.fn = fn;
+}
 /**
 *
 *   Fin del objeto
 *
 **/
 
-//se declara el nodo inicial con la función Nodo que inicializa el nivel y las piezas mal colocadas en 0
-var nodoInicial = new Nodo(raiz);
-//se declara el nodo meta con la función Nodo que inicializa el nivel y las piezas mal colocadas en 0
-var nodoMeta = new Nodo(meta);
-
-//agrega el nodo inicial a la lista
-lista.push(nodoInicial);
-
-//inicializa variable contador en 0
-var contador = parseInt(0);
-//inicializa variable nivel en 0
-var nivel = parseInt(0);
-
-
-// Funcion que clona un nodo ( Maldito javascript extraño :S )
+// Funcion que cola un nodo ( Maldito javascript extraño :S )
 function clone(existingArray){
 	var newObj = (existingArray instanceof Array) ? []:{};
 	for(i in existingArray){
@@ -95,122 +86,6 @@ function clone(existingArray){
 		}
 	}
 	return newObj;
-}
-
-//Expande los nodos 
-function expandirNodos(lista, pos){
-	exp_cont++;
-	nivel++;
-
-	nodo = lista[0].obtenNodo();
-
-	/*console.log("----------------");
-	console.log(lista);
-	console.log("****************");*/
-
-	//Busca en todo el arreglo el 0
-	for(x in nodo){
-		for(y in nodo[x]){
-			if(nodo[x][y] == 0){//si encuentra el valor de 0 entonces
-				var i = parseInt(x);//j lo declara como el valor int de x
-				var j = parseInt(y);//i lo declara como el valor int de y
-
-				if(i-1>=0){//si i-1 es menor o igual a 0 entonces
-					//clona nodo en una variable llamada copia
-					var copia = clone(nodo);
-					//tmp1 es una referencia del valor de copia en la posición i-1,y
-					tmp1 = copia[i-1][y];
-					//a copia en la posición i-1,y se le asigna el valor de copia en la posición i,y
-					copia[i-1][y] = copia[i][y];
-					//a copia en la posición i,y se le asigna el valor de i,y
-					copia[i][y] = tmp1;
-					//se instancía node como un nuevo nodo con el valor de copia
-					var node = new Nodo(copia);
-					//se le da a node el valor del nivel en el que se encuentra
-					node.ponNivel(nivel);
-					//se le da a node el valor de la distancia manhattan actual
-					node.ponDistanciaManhattan(numeroDeDistanciaManhattan(nodoMeta.obtenNodo(), node.obtenNodo()));
-					//agrega el nodo a la lista
-					lista.push(node);
-
-				}
-				if(i+1<=2){
-
-					var copia2 = clone(nodo);
-
-					tmp2 = copia2[i+1][y];
-
-					copia2[i+1][y] = copia2[i][y];
-
-					copia2[i][y] = tmp2;
-
-					var node2 = new Nodo(copia2);
-
-					node2.ponNivel(nivel);
-
-					node2.ponDistanciaManhattan(numeroDeDistanciaManhattan(nodoMeta.obtenNodo(), node2.obtenNodo()));
-
-					lista.push(node2);
-				}
-				if(j-1>=0){
-
-					var copia3 = clone(nodo);
-
-					tmp3 = copia3[i][j-1];
-
-					copia3[i][j-1] = copia3[i][j];
-
-					copia3[i][j] = tmp3;
-
-					var node3 = new Nodo(copia3);
-
-					node3.ponNivel(nivel);
-
-					node3.ponDistanciaManhattan(numeroDeDistanciaManhattan(nodoMeta.obtenNodo(), node3.obtenNodo()));
-
-					lista.push(node3);
-				}
-				if(j+1<=2){
-					var copia4 = clone(nodo);
-
-					tmp4 = copia4[i][j+1];
-
-					copia4[i][j+1] = copia4[i][j];
-
-					copia4[i][j] = tmp4;
-
-					var node4 = new Nodo(copia4);
-
-					node4.ponNivel(nivel);
-
-					node4.ponDistanciaManhattan(numeroDeDistanciaManhattan(nodoMeta.obtenNodo(), node4.obtenNodo()));
-
-					lista.push(node4);
-				}
-			}
-		}
-	}
-	
-	if(comparaNodos(nodoMeta.obtenNodo(), lista[pos].obtenNodo())){
-		console.log("===================================");
-		console.log(" ");
-		console.log("PASOS: " + lista[pos].obtenNivel() );
-		//Número de esquinas por el numero de casillas que pueden desplazar
-		var esquina = 4*2;
-		//Número de lados por el numero de casillas que pueden desplazar
-		var lado = 4*3;
-		//Casilla central por las casillas que puede desplazar
-		var centro = 1*4;
-		//factor de ramificación
-		var factor = (parseInt(esquina)+parseInt(lado)+parseInt(centro))/8;//número de casillas que se desplazan.
-		console.log('FACTOR DE RAMIFICACION: '+factor);
-		console.log('RAMIFICACION PROMEDIO:'+newton_raphson(exp_cont,lista[pos].obtenNivel(),factor));
-		console.log(" ");
-		console.log("===================================");
-		process.exit(1);
-	}
-
-	lista.splice(0, 1);
 }
 
 function numeroDeDistanciaManhattan(nodo1, nodo2){
@@ -444,11 +319,11 @@ function numeroDeDistanciaManhattan(nodo1, nodo2){
 		}
 	}
 	pasos++;
-	console.log('Distancia Manhattan: '+distancia+' del nodo: '+nodo2);
+	//console.log('Distancia Manhattan: '+distancia+' del nodo: '+nodo2);
 	return distancia;
 }
-
-function comparaNodos(nodo1, nodo2){
+// Compara si dos nodos son iguales
+function compraraNodos(nodo1, nodo2){
 	for(x in nodo1){
 		for(y in nodo1[x]){
 			x = parseInt(x);
@@ -462,41 +337,145 @@ function comparaNodos(nodo1, nodo2){
 	return true;
 }
 
-//Funcion para sacar la ramificación promedio
-function newton_raphson(n,k,b){
-	n = parseFloat(n);
-	k = parseFloat(k);
-	b = parseFloat(b);
-	var f= Math.pow(b,(k+1))+(b*(1-n))-1;
-	var f_prima=(k+1)*Math.pow(b,k);
-	var b_prima= b-(f/f_prima);
-	if((b_prima-b)< 0.00001){
-		return b_prima;
-	}else{
-		newton_raphson(n,k,b_prima);
+fs.readFile(__dirname+"/entrada", "utf8", function(err, data){
+	if(err){
+		console.log(err.message);
+		process.exit(1);
 	}
 
-}
+	/*
+	* Inicializa las variables
+	*/
+	dataArray = data.split('');
+	var raiz = [[dataArray[0],dataArray[1],dataArray[2]],[dataArray[3],dataArray[4],dataArray[5]],[dataArray[6],dataArray[7],dataArray[8]]];
 
-expandirNodos(lista, contador);
+	var meta = [[1, 2, 3],[4, 5, 6],[7, 8, 0]];
 
-while(lista.length != 0){
+	var nodosHijo = [];
+	var pasos = [];
 
-	for(x in lista){
-		var fn = lista[x].obtenFn();
-		var nextPos = parseInt(x) + parseInt(1);
+	var nodoInicial = new Nodo(raiz);
+	var nodoMeta = new Nodo(meta);
 
-		if(lista[nextPos] != undefined){
-			var fn2 = lista[nextPos].obtenFn();
-			if(parseInt(fn) > parseInt(fn2)){
-				var nodoSiguiente = nextPos;
-				console.log("Posicion del arbol en la que se mueve: "+nextPos);
-				console.log("FN: "+fn2);
+	var nivel = parseInt(0);
+
+	var contador = parseInt(0);
+
+	nodosHijo.push(nodoInicial);
+
+	function compare(a,b) {
+		if (a.fn < b.fn)
+	    	return -1;
+	  	if (a.fn > b.fn)
+	    	return 1;
+	 	return 0;
+	}
+
+	// Funcion que expande los nodos hijo
+	function expandirNodos(nodo, nivel){
+
+		//console.log(nodo);
+
+		//Busca en todo el arreglo el 0
+		for(x in nodo){
+			for(y in nodo[x]){
+				if(nodo[x][y] == 0){
+					var i = parseInt(x);
+					var j = parseInt(y);
+
+					if(i-1>=0){
+
+						var copia = clone(nodo);
+
+						tmp1 = copia[i-1][j];
+						copia[i-1][j] = copia[i][j];
+						copia[i][j] = tmp1;
+
+						var node = new Nodo(copia);
+						node.ponNivel(nivel+1);
+						node.ponPiezasMalColocadas(numeroDeDistanciaManhattan(nodoMeta.obtenNodo(), node.obtenNodo()));
+						node.ponMov("U");
+						node.ponFn(node.obtenFn());
+
+						nodosHijo.push(node);
+					}
+					if(i+1<=2){
+
+						var copia2 = clone(nodo);
+
+						tmp2 = copia2[i+1][j];
+						copia2[i+1][j] = copia2[i][j];
+						copia2[i][j] = tmp2;
+
+						var node2 = new Nodo(copia2);
+						node2.ponNivel(nivel+1);
+						node2.ponPiezasMalColocadas(numeroDeDistanciaManhattan(nodoMeta.obtenNodo(), node2.obtenNodo()));
+						node2.ponMov("D");
+						node2.ponFn(node2.obtenFn());
+
+						nodosHijo.push(node2);
+					}
+					if(j-1>=0){
+
+						var copia3 = clone(nodo);
+
+						tmp3 = copia3[i][j-1];
+						copia3[i][j-1] = copia3[i][j];
+						copia3[i][j] = tmp3;
+
+						var node3 = new Nodo(copia3);
+
+						node3.ponNivel(nivel+1);
+						node3.ponPiezasMalColocadas(numeroDeDistanciaManhattan(nodoMeta.obtenNodo(), node3.obtenNodo()));
+						node3.ponMov("L");
+						node3.ponFn(node3.obtenFn());
+
+						nodosHijo.push(node3);
+					}
+					if(j+1<=2){
+						var copia4 = clone(nodo);
+
+						tmp4 = copia4[i][j+1];
+						copia4[i][j+1] = copia4[i][j];
+						copia4[i][j] = tmp4;
+
+						var node4 = new Nodo(copia4);
+						node4.ponNivel(nivel+1);
+						node4.ponPiezasMalColocadas(numeroDeDistanciaManhattan(nodoMeta.obtenNodo(), node4.obtenNodo()));
+						node4.ponMov("R");
+						node4.ponFn(node4.obtenFn());
+
+						nodosHijo.push(node4);
+
+					}
+				}
 			}
 		}
+
+		if(compraraNodos(nodoMeta.obtenNodo(), nodosHijo[0].obtenNodo())){
+			//Número de esquinas por el numero de casillas que pueden desplazar
+			var esquina = 4*2;
+			//Número de lados por el numero de casillas que pueden desplazar
+			var lado = 4*3;
+			//Casilla central por las casillas que puede desplazar
+			var centro = 1*4;
+			//factor de ramificación
+			var factor = (parseInt(esquina)+parseInt(lado)+parseInt(centro))/8;//número de casillas que se desplazan.
+			console.log("Pasos: " + nodosHijo[0].obtenNivel());
+			console.log("Factor de ramificación: "+factor);
+			console.log(pasos);
+			process.exit(1);
+		}
+
+		pasos.push(nodosHijo[0].obtenMovimiento());
+
+		nodosHijo.splice(0, 1);
+
+		nodosHijo.sort(compare);
+
 	}
 
-	expandirNodos(lista, nodoSiguiente);
-	
-}	
-
+	while(nodosHijo.length != 0){
+		expandirNodos(nodosHijo[0].obtenNodo(), nodosHijo[0].obtenNivel());
+	}
+});
