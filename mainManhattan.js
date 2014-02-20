@@ -192,7 +192,9 @@ function expandirNodos(lista, pos){
 	}
 	
 	if(comparaNodos(nodoMeta.obtenNodo(), lista[pos].obtenNodo())){
-		console.log("Nivel del arbol de la solucion: " + lista[pos].obtenNivel());
+		console.log("===================================");
+		console.log(" ");
+		console.log("PASOS: " + lista[pos].obtenNivel());
 		//Número de esquinas por el numero de casillas que pueden desplazar
 		var esquina = 4*2;
 		//Número de lados por el numero de casillas que pueden desplazar
@@ -201,7 +203,10 @@ function expandirNodos(lista, pos){
 		var centro = 1*4;
 		//factor de ramificación
 		var factor = (parseInt(esquina)+parseInt(lado)+parseInt(centro))/8;//número de casillas que se desplazan.
+		console.log('FACTOR DE RAMIFICACION: '+factor);
 		console.log('RAMIFICACION PROMEDIO:'+newton_raphson(exp_cont,lista[pos].obtenNivel(),factor));
+		console.log(" ");
+		console.log("===================================");
 		process.exit(1);
 	}
 
