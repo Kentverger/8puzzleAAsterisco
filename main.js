@@ -7,6 +7,8 @@ var util = require('util');
 *
 **/
 
+var exp_cont=0;
+
 function Nodo(nodo){
 	this.nodo = nodo;
 	this.piezasMalColocadas = 0;
@@ -138,7 +140,7 @@ fs.readFile(__dirname+"/entrada", "utf8", function(err, data){
 
 	// Funcion que expande los nodos hijo
 	function expandirNodos(nodo, nivel){
-
+		exp_cont++;
 		//console.log(nodo);
 
 		//Busca en todo el arreglo el 0
@@ -218,6 +220,7 @@ fs.readFile(__dirname+"/entrada", "utf8", function(err, data){
 		}
 
 		if(compraraNodos(nodoMeta.obtenNodo(), nodosHijo[0].obtenNodo())){
+
 			//Número de esquinas por el numero de casillas que pueden desplazar
 			var esquina = 4*2;
 			//Número de lados por el numero de casillas que pueden desplazar
@@ -243,4 +246,20 @@ fs.readFile(__dirname+"/entrada", "utf8", function(err, data){
 	while(nodosHijo.length != 0){
 		expandirNodos(nodosHijo[0].obtenNodo(), nodosHijo[0].obtenNivel());
 	}
+
+	//Funcion para sacar la ramificación promedio
+	function newton_raphson(n,k,b){
+	n = parseFloat(n);
+	k = parseFloat(k);
+	b = parseFloat(b);
+	var f= Math.pow(b,(k+1))+(b*(1-n))-1;
+	var f_prima=(k+1)*Math.pow(b,k)-n;
+	var b_prima= b-(f/f_prima);
+	if((b_prima-b)< 0.00001){
+		return b_prima;
+	}else{
+		newton_raphson(n,k,b_prima);
+	}
+
+}
 });
