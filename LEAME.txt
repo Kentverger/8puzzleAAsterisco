@@ -27,3 +27,6 @@ Proyecto 1
 	$ node main.js //para la heurística 1 (piezas mal colocadas)
 	$ node mainManhattan.js //para la heurística 2 (distancia manhattan)
 
+** Información Adicional **
+Se utilizó Node js, una plataforma que utiliza Javascript como lenjuage de programación.
+El factor de ramificación promedio lo sacamos en el basado en este documento >> http://ocw.uc3m.es/ingenieria-informatica/inteligencia-artificial-2/ejercicios/ejercicios-espacio-estados.pdf y adaptamos según nuestro problema 8 Puzzle
