@@ -1,5 +1,6 @@
 var fs = require("fs");
 var util = require('util');
+
 /**
 *
 *    Objeto nodo con las propiedades de costo y piezas mal colocadas
