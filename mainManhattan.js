@@ -194,7 +194,7 @@ function expandirNodos(lista, pos){
 	if(comparaNodos(nodoMeta.obtenNodo(), lista[pos].obtenNodo())){
 		console.log("===================================");
 		console.log(" ");
-		console.log("PASOS: " + lista[pos].obtenNivel());
+		console.log("PASOS: " + lista[pos].obtenNivel() );
 		//Número de esquinas por el numero de casillas que pueden desplazar
 		var esquina = 4*2;
 		//Número de lados por el numero de casillas que pueden desplazar
@@ -462,6 +462,7 @@ function comparaNodos(nodo1, nodo2){
 	return true;
 }
 
+//Funcion para sacar la ramificación promedio
 function newton_raphson(n,k,b){
 	n = parseFloat(n);
 	k = parseFloat(k);
