@@ -23,6 +23,8 @@ Proyecto 1
 
 
 	Revisa tu versión de node para saber si se instaló correctamente:
+
+
 	`$ node -v`
 
 2. En la terminal dirigete a la carpeta donde se encuentra el codigo fuente y corre el comando
