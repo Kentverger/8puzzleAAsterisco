@@ -1,14 +1,14 @@
-# 8 Puzzle con A*, heuristicas distancia Manhattan y numero de fichas mas colocadas
+# 8 Puzzle con A*, heuristicas: distancia Manhattan y numero de fichas mal colocadas
 
 Implementación de A* con dos heurísticas, casillas mal colocadas y distancia manhattan
 
 Por:
 
 
-* 070521 Luis Carlos González Hernández
-* 070462 Ana Karen Guerrero Gámez
-* 090125 Asaf Eduardo López Govea
-* 070528 José Gualberto Meléndez Rangel
+* **070521** Luis Carlos González Hernández
+* **070462** Ana Karen Guerrero Gámez
+* **090125** Asaf Eduardo López Govea
+* **070528** José Gualberto Meléndez Rangel
 
 
 Inteligencia Artificial I
