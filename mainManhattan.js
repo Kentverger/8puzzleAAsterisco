@@ -1,8 +1,8 @@
 
 // Variables iniciales
 var raiz = [[1, 2, 3],
-			[6, 0, 5],
-			[7, 8, 4]];
+			[4, 0, 5],
+			[7, 8, 6]];
 
 var meta = [[1, 2, 3],
 		[4, 5, 6],
@@ -10,6 +10,8 @@ var meta = [[1, 2, 3],
 
 var lista = [];
 
+var exp_cont=0;
+var pasos=0;
 
 /**
 *
@@ -97,7 +99,7 @@ function clone(existingArray){
 
 //Expande los nodos 
 function expandirNodos(lista, pos){
-
+	exp_cont++;
 	nivel++;
 
 	nodo = lista[0].obtenNodo();
@@ -191,6 +193,15 @@ function expandirNodos(lista, pos){
 	
 	if(comparaNodos(nodoMeta.obtenNodo(), lista[pos].obtenNodo())){
 		console.log("Nivel del arbol de la solucion: " + lista[pos].obtenNivel());
+		//Número de esquinas por el numero de casillas que pueden desplazar
+		var esquina = 4*2;
+		//Número de lados por el numero de casillas que pueden desplazar
+		var lado = 4*3;
+		//Casilla central por las casillas que puede desplazar
+		var centro = 1*4;
+		//factor de ramificación
+		var factor = (parseInt(esquina)+parseInt(lado)+parseInt(centro))/8;//número de casillas que se desplazan.
+		console.log('RAMIFICACION PROMEDIO:'+newton_raphson(exp_cont,lista[pos].obtenNivel(),factor));
 		process.exit(1);
 	}
 
@@ -231,14 +242,9 @@ function numeroDeDistanciaManhattan(nodo1, nodo2){
 							if(piezasmal[contador].fil==0){
 								if(correcto[contador].fil==0){//y la fila correcta es la 0
 									if(piezasmal[contador].col==0){//si la columna donde esta nuestra pieza es la 0
-										if(correcto[contador].col==1){
-											//distancia va a ser igual a distancia mas 1
-											distancia=parseInt(distancia)+1;
-										}else if (correcto[contador].col==2){
-											//distancia va a ser igual a distancia mas 2
-											distancia=parseInt(distancia)+2;
-										}
-										
+										if(correcto[contador].cil==1){}
+										//distancia va a ser igual a distancia mas la posición de la columna correcta 1 ó 2
+										distancia=parseInt(distancia)+parseInt(correcto[contador].col);
 									}
 									else if(piezasmal[contador].col==1){//si la columna donde esta nuestra pieza es la 1
 										//distancia va a ser igual a distancia mas 1 ya que la columna correcta está a un movimiento
@@ -257,13 +263,8 @@ function numeroDeDistanciaManhattan(nodo1, nodo2){
 									//distancia va a ser igual a distancia mas 1 ya que la fila correcta está a un movimiento
 									distancia=parseInt(distancia)+1;
 									if(piezasmal[contador].col==0){//si la columna donde esta nuestra pieza es la 0
-										if(correcto[contador].col==1){
-											//distancia va a ser igual a distancia mas 1
-											distancia=parseInt(distancia)+1;
-										}else if (correcto[contador].col==2){
-											//distancia va a ser igual a distancia mas 2
-											distancia=parseInt(distancia)+2;
-										}
+										//distancia va a ser igual a distancia mas la posición de la columna correcta 1 ó 2
+										distancia=parseInt(distancia)+parseInt(correcto[contador].col);
 									}
 									else if(piezasmal[contador].col==1){//si la columna donde esta nuestra pieza es la 1
 										//distancia va a ser igual a distancia mas 1 ya que la columna correcta está a un movimiento
@@ -284,13 +285,8 @@ function numeroDeDistanciaManhattan(nodo1, nodo2){
 									//distancia va a ser igual a distancia mas 1 ya que la fila correcta está a un movimiento
 									distancia=parseInt(distancia)+2;
 									if(piezasmal[contador].col==0){//si la columna donde esta nuestra pieza es la 0
-										if(correcto[contador].col==1){
-											//distancia va a ser igual a distancia mas 1
-											distancia=parseInt(distancia)+1;
-										}else if (correcto[contador].col==2){
-											//distancia va a ser igual a distancia mas 2
-											distancia=parseInt(distancia)+2;
-										}
+										//distancia va a ser igual a distancia mas la posición de la columna correcta 1 ó 2
+										distancia=parseInt(distancia)+parseInt(correcto[contador].col);
 									}
 									else if(piezasmal[contador].col==1){//si la columna donde esta nuestra pieza es la 1
 										//distancia va a ser igual a distancia mas 1 ya que la columna correcta está a un movimiento
@@ -312,13 +308,8 @@ function numeroDeDistanciaManhattan(nodo1, nodo2){
 									//distancia va a ser igual a distancia mas 1 ya que la fila correcta está a un movimiento
 									distancia=parseInt(distancia)+1;
 									if(piezasmal[contador].col==0){//si la columna donde esta nuestra pieza es la 0
-										if(correcto[contador].col==1){
-											//distancia va a ser igual a distancia mas 1
-											distancia=parseInt(distancia)+1;
-										}else if (correcto[contador].col==2){
-											//distancia va a ser igual a distancia mas 2
-											distancia=parseInt(distancia)+2;
-										}
+										//distancia va a ser igual a distancia mas la posición de la columna correcta 1 ó 2
+										distancia=parseInt(distancia)+parseInt(correcto[contador].col);
 									}
 									else if(piezasmal[contador].col==1){//si la columna donde esta nuestra pieza es la 1
 										//distancia va a ser igual a distancia mas 1 ya que la columna correcta está a un movimiento
@@ -335,13 +326,8 @@ function numeroDeDistanciaManhattan(nodo1, nodo2){
 								//y la fila correcta es la 1
 								if(correcto[contador].fil==1){
 									if(piezasmal[contador].col==0){//si la columna donde esta nuestra pieza es la 0
-										if(correcto[contador].col==1){
-											//distancia va a ser igual a distancia mas 1
-											distancia=parseInt(distancia)+1;
-										}else if (correcto[contador].col==2){
-											//distancia va a ser igual a distancia mas 2
-											distancia=parseInt(distancia)+2;
-										}
+										//distancia va a ser igual a distancia mas la posición de la columna correcta 1 ó 2
+										distancia=parseInt(distancia)+parseInt(correcto[contador].col);
 									}
 									if(piezasmal[contador].col==1){//si la columna donde esta nuestra pieza es la 1
 										//distancia va a ser igual a distancia mas 1 ya que la columna correcta está a un movimiento
@@ -362,13 +348,8 @@ function numeroDeDistanciaManhattan(nodo1, nodo2){
 									//distancia va a ser igual a distancia mas 1 ya que la fila correcta está a un movimiento
 									distancia=parseInt(distancia)+1;
 									if(piezasmal[contador].col==0){//si la columna donde esta nuestra pieza es la 0
-										if(correcto[contador].col==1){
-											//distancia va a ser igual a distancia mas 1
-											distancia=parseInt(distancia)+1;
-										}else if (correcto[contador].col==2){
-											//distancia va a ser igual a distancia mas 2
-											distancia=parseInt(distancia)+2;
-										}
+										//distancia va a ser igual a distancia mas la posición de la columna correcta 1 ó 2
+										distancia=parseInt(distancia)+parseInt(correcto[contador].col);
 									}
 									else if(piezasmal[contador].col==1){//si la columna donde esta nuestra pieza es la 1
 										//distancia va a ser igual a distancia mas 1 ya que la columna correcta está a un movimiento
@@ -390,13 +371,8 @@ function numeroDeDistanciaManhattan(nodo1, nodo2){
 									//distancia va a ser igual a distancia mas 1 ya que la fila correcta está a un movimiento
 									distancia=parseInt(distancia)+2;
 									if(piezasmal[contador].col==0){//si la columna donde esta nuestra pieza es la 0
-										if(correcto[contador].col==1){
-											//distancia va a ser igual a distancia mas 1
-											distancia=parseInt(distancia)+1;
-										}else if (correcto[contador].col==2){
-											//distancia va a ser igual a distancia mas 2
-											distancia=parseInt(distancia)+2;
-										}
+										//distancia va a ser igual a distancia mas la posición de la columna correcta 1 ó 2
+										distancia=parseInt(distancia)+parseInt(correcto[contador].col);
 									}
 									else if(piezasmal[contador].col==1){//si la columna donde esta nuestra pieza es la 1
 										//distancia va a ser igual a distancia mas 1 ya que la columna correcta está a un movimiento
@@ -415,13 +391,8 @@ function numeroDeDistanciaManhattan(nodo1, nodo2){
 									//distancia va a ser igual a distancia mas 1 ya que la fila correcta está a un movimiento
 									distancia=parseInt(distancia)+1;
 									if(piezasmal[contador].col==0){//si la columna donde esta nuestra pieza es la 0
-										if(correcto[contador].col==1){
-											//distancia va a ser igual a distancia mas 1
-											distancia=parseInt(distancia)+1;
-										}else if (correcto[contador].col==2){
-											//distancia va a ser igual a distancia mas 2
-											distancia=parseInt(distancia)+2;
-										}
+										//distancia va a ser igual a distancia mas la posición de la columna correcta 1 ó 2
+										distancia=parseInt(distancia)+parseInt(correcto[contador].col);
 									}
 									else if(piezasmal[contador].col==1){//si la columna donde esta nuestra pieza es la 1
 										//distancia va a ser igual a distancia mas 1 ya que la columna correcta está a un movimiento
@@ -441,13 +412,8 @@ function numeroDeDistanciaManhattan(nodo1, nodo2){
 								//y la fila correcta es la 2
 								if(correcto[contador].fil==2){
 									if(piezasmal[contador].col==0){//si la columna donde esta nuestra pieza es la 0
-										if(correcto[contador].col==1){
-											//distancia va a ser igual a distancia mas 1
-											distancia=parseInt(distancia)+1;
-										}else if (correcto[contador].col==2){
-											//distancia va a ser igual a distancia mas 2
-											distancia=parseInt(distancia)+2;
-										}
+										//distancia va a ser igual a distancia mas la posición de la columna correcta 1 ó 2
+										distancia=parseInt(distancia)+parseInt(correcto[contador].col);
 									}
 									if(piezasmal[contador].col==1){//si la columna donde esta nuestra pieza es la 1
 										//distancia va a ser igual a distancia mas 1 ya que la columna correcta está a un movimiento
@@ -469,11 +435,11 @@ function numeroDeDistanciaManhattan(nodo1, nodo2){
 				}
 				//se aumenta el contadorde piezas mal colocadas
 				contador++;
-
 			}
 		}
 	}
-	console.log('Distancia: '+distancia+' del nodo: '+nodo2);
+	pasos++;
+	console.log('Distancia Manhattan: '+distancia+' del nodo: '+nodo2);
 	return distancia;
 }
 
@@ -489,6 +455,21 @@ function comparaNodos(nodo1, nodo2){
 		}
 	}
 	return true;
+}
+
+function newton_raphson(n,k,b){
+	n = parseFloat(n);
+	k = parseFloat(k);
+	b = parseFloat(b);
+	var f= Math.pow(b,(k+1))+(b*(1-n))-1;
+	var f_prima=(k+1)*Math.pow(b,k);
+	var b_prima= b-(f/f_prima);
+	if((b_prima-b)< 0.00001){
+		return b_prima;
+	}else{
+		newton_raphson(n,k,b_prima);
+	}
+
 }
 
 expandirNodos(lista, contador);
@@ -510,4 +491,6 @@ while(lista.length != 0){
 	}
 
 	expandirNodos(lista, nodoSiguiente);
-}
+	
+}	
+
